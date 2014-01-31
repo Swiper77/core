@@ -284,13 +284,23 @@ function deserialize($varValue, $blnForceArray=false)
 		return $varValue;
 	}
 
-	if (!is_string($varValue))
+	if ($varValue === null)
 	{
-		return $blnForceArray ? (($varValue === null) ? array() : array($varValue)) : $varValue;
+		return $blnForceArray ? array() : null;
+	}
+	elseif (!is_string($varValue))
+	{
+		return $blnForceArray ? array($varValue) : $varValue;
 	}
 	elseif (trim($varValue) == '')
 	{
 		return $blnForceArray ? array() : '';
+	}
+
+	// Do not process serialized objects (see #6695)
+	if (strncmp($varValue, 'O:', 2) === 0)
+	{
+		trigger_error('deserialize() does not support serialized objects', E_USER_ERROR);
 	}
 
 	$varUnserialized = @unserialize($varValue);

@@ -5,6 +5,11 @@ Version 3.2.5 (2014-XX-XX)
 --------------------------
 
 ### Fixed
+Do not process serialized objects in the `deserialize()` function, so it is not
+vulnerable to PHP object injection in conjunction with raw POST data. Thanks to
+Pedro Ribeiro for his input (see #6695).
+
+### Fixed
 Allow any character in passwords, especially the less-than symbol (see #6447).
 
 ### Fixed
